@@ -35,33 +35,28 @@ Let's dive into the specifics of each operation:
     * When an account is inserted set the rating to 'Hot' if the Phone, Website, and Fax is not empty.
     * Trigger should only fire on insert.
     */
-trigger AccountTrigger on Account (before insert, after insert) {
-    if(Trigger.isBefore && Trigger.isInsert) {
-        AccountHelper.setTypeProspect(Trigger.new);
-        AccountHelper.addressCopy(Trigger.new);
-        AccountHelper.setRating(Trigger.new);
-    }
 
- 
-
-
-    
     /*
     * Account Trigger
     * When an account is inserted create a contact related to the account with the following default values:
     * LastName = 'DefaultContact'
     * Email = 'default@email.com'
     * Trigger should only fire on insert.
-    */    
-    if(Trigger.isAfter && Trigger.isInsert){     
-        List<Contact> contacts = new List<Contact>();   
-        for(Account acc : Trigger.new){
-            Contact con = new Contact();
-            con.LastName = 'DefaultContact';
-            con.Email = 'default@email.com';
-            con.AccountId = acc.Id;
-            contacts.add(con);
-        }
-        insert contacts; 
+    */  
+trigger AccountTrigger on Account (before insert, after insert) {
+    if(Trigger.isBefore && Trigger.isInsert) {
+        AccountHelper.setTypeProspect(Trigger.new);
+        AccountHelper.addressCopy(Trigger.new);
+        AccountHelper.setRating(Trigger.new);
+    }
+    if(Trigger.isAfter && Trigger.isInsert)  {  
+        AccountHelper.defaultContact(Trigger.new);
     }
 }
+
+
+ 
+
+
+    
+  

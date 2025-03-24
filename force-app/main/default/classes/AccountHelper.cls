@@ -61,18 +61,31 @@ public with sharing class AccountHelper {
         }        
     }
 // When an account is inserted set the rating to 'Hot' if the Phone, Website, and Fax is not empty.
-    public static void setRating(List<account> accounts) {
+    public static void setRating(List<Account> accounts) {
         for (Account acc : accounts) {
             if (acc.Phone != null && acc.Website != null && acc.Fax != null) {
                 acc.Rating = 'Hot';
             }
         }
     }
-}
+// * When an account is inserted create a contact related to the account with the following default values:
+// * LastName = 'DefaultContact'
+// * Email = 'default@email.com' 
+    public static void defaultContact (List<Account> accounts) {
+        List<Contact> contacts = new List<Contact>();   
+            for(Account acc : accounts){
+                Contact con = new Contact();
+                con.LastName = 'DefaultContact';
+                con.Email = 'default@email.com';
+                con.AccountId = acc.Id;
+                contacts.add(con);
+            }
+            insert contacts; 
+        }
+    }
 
 
 
-    //[public | private ] [static] data_type defaultContact (input parameters) {
-    //  The body of the method
-    //}
-}
+
+
+
