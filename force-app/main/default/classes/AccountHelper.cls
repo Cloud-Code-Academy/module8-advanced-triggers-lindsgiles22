@@ -36,7 +36,7 @@ public with sharing class AccountHelper {
             }
         }
     }
-
+// When an account is inserted copy the shipping address to the billing address.
     public static void addressCopy(List<Account> accounts){
         for (Account acc : accounts) {
             if (acc.ShippingStreet != null) {
@@ -60,11 +60,17 @@ public with sharing class AccountHelper {
             }
         }        
     }
+// When an account is inserted set the rating to 'Hot' if the Phone, Website, and Fax is not empty.
+    public static void setRating(List<account> accounts) {
+        for (Account acc : accounts) {
+            if (acc.Phone != null && acc.Website != null && acc.Fax != null) {
+                acc.Rating = 'Hot';
+            }
+        }
+    }
 }
 
-    //[public | private ] [static] data_type setRating (input parameters) {
-    //  The body of the method
-    //}
+
 
     //[public | private ] [static] data_type defaultContact (input parameters) {
     //  The body of the method

@@ -17,7 +17,7 @@ For this lesson, students have two options:
 
 Let's dive into the specifics of each operation:
 */
-trigger AccountTrigger on Account (before insert, after insert) {
+
     /*
     * Account Trigger
     * When an account is inserted change the account type to 'Prospect' if there is no value in the type field.
@@ -29,24 +29,22 @@ trigger AccountTrigger on Account (before insert, after insert) {
     * When an account is inserted copy the shipping address to the billing address.
     * Trigger should only fire on insert.
     */
-    if(Trigger.isBefore && Trigger.isInsert) {
-        AccountHelper.setTypeProspect(Trigger.new);
-        AccountHelper.addressCopy(Trigger.new);
-    }
 
- 
     /*
     * Account Trigger
     * When an account is inserted set the rating to 'Hot' if the Phone, Website, and Fax is not empty.
     * Trigger should only fire on insert.
     */
-    if (Trigger.isBefore && Trigger.isInsert) {
-        for (Account acc : Trigger.new) {
-            if (acc.Phone != null && acc.Website != null && acc.Fax != null) {
-                acc.Rating = 'Hot';
-            }
-        }
+trigger AccountTrigger on Account (before insert, after insert) {
+    if(Trigger.isBefore && Trigger.isInsert) {
+        AccountHelper.setTypeProspect(Trigger.new);
+        AccountHelper.addressCopy(Trigger.new);
+        AccountHelper.setRating(Trigger.new);
     }
+
+ 
+
+
     
     /*
     * Account Trigger
