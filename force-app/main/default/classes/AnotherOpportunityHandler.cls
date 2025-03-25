@@ -35,3 +35,16 @@ public with sharing class AnotherOpportunityHandler {
     insert tsk;
     }
 }
+    public static void appendStageChangesToOppDescrip (List<Opportunity> newOpps) {
+    List<Opportunity> oppsToUpdate = new List<Opportunity>(); 
+    // Append Stage changes in Opportunity Description
+     for (Opportunity opp : newOpps){
+        if (opp.StageName != null){
+            opp.Description += '\n Stage Change:' + opp.StageName + ':' + DateTime.now().format();
+            oppsToUpdate.add(opp);
+        }
+    }
+    update oppsToUpdate;                
+}
+    
+}

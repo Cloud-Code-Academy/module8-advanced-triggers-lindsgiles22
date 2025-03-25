@@ -30,17 +30,9 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
     if (Trigger.isAfter){
         if (Trigger.isInsert){
             AnotherOpportunityHandler.createTaskForNewOpp(Trigger.new);
-        } else if (Trigger.isUpdate){
-            // Append Stage changes in Opportunity Description
-            for (Opportunity opp : Trigger.new){
-                for (Opportunity oldOpp : Trigger.old){
-                    if (opp.StageName != null){
-                        opp.Description += '\n Stage Change:' + opp.StageName + ':' + DateTime.now().format();
-                    }
-                }                
-            }
-            update Trigger.new;
-        }
+        } else if (Trigger.isUpdate)
+            AnotherOpportunityHandler.appendStageChangesToOppDescrip(Trigger.new);
+           
         // Send email notifications when an Opportunity is deleted 
         else if (Trigger.isDelete){
             notifyOwnersOpportunityDeleted(Trigger.old);
