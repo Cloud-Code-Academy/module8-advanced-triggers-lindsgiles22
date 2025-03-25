@@ -15,3 +15,23 @@ public with sharing class AnotherOpportunityHandler {
             }
         }
     }
+    public static void createTaskForNewOpp(List<Opportunity> insertedOpps) {
+        // Create a new Task for newly inserted Opportunities
+        List<Task> tasksToInsert = new List<Task>();
+
+        for (Opportunity opp : insertedOpps) {
+            if (opp.Primary_Contact__c != null) {
+            Task tsk = new Task();
+            tsk.Subject = 'Call Primary Contact';
+            tsk.WhatId = opp.Id;
+            tsk.WhoId = opp.Primary_Contact__c;
+            tsk.OwnerId = opp.OwnerId;
+            tsk.ActivityDate = Date.today().addDays(3);
+            tasksToInsert.add(task);
+        }
+    }
+    
+    if (!tasksToInsert.isEmpty()) {
+    insert tsk;
+    }
+}
