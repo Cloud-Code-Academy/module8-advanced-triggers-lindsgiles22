@@ -44,7 +44,9 @@ public with sharing class AnotherOpportunityHandler {
             oppsToUpdate.add(opp);
         }
     }
-    update oppsToUpdate;                
+    if (!oppsToUpdate.isEmpty()) {
+    update oppsToUpdate;   
+    }             
 }
     
 }

@@ -32,13 +32,11 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
             AnotherOpportunityHandler.createTaskForNewOpp(Trigger.new);
         } else if (Trigger.isUpdate)
             AnotherOpportunityHandler.appendStageChangesToOppDescrip(Trigger.new);
-           
         // Send email notifications when an Opportunity is deleted 
-        else if (Trigger.isDelete){
+        } else if (Trigger.isDelete){
             notifyOwnersOpportunityDeleted(Trigger.old);
-        } 
         // Assign the primary contact to undeleted Opportunities
-        else if (Trigger.isUndelete){
+        } else if (Trigger.isUndelete){
             assignPrimaryContact(Trigger.newMap);
         }
     }
