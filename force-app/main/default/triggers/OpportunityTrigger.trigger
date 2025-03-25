@@ -23,11 +23,7 @@ trigger OpportunityTrigger on Opportunity (before update, after update, before d
     * Trigger should only fire on update.
     */
     if (Trigger.isUpdate && Trigger.isBefore){
-        for(Opportunity opp : Trigger.new){
-            if(opp.Amount < 5000){
-                opp.addError('Opportunity amount must be greater than 5000');
-            }
-        }
+        OpportunityHandler.validateOppAmount(Trigger.new);
     }
 
     /*
@@ -36,15 +32,7 @@ trigger OpportunityTrigger on Opportunity (before update, after update, before d
     * Trigger should only fire on delete.
     */
     if (Trigger.isDelete){
-        //Account related to the opportunities 
-        Map<Id, Account> accounts = new Map<Id, Account>([SELECT Id, Industry FROM Account WHERE Id IN (SELECT AccountId FROM Opportunity WHERE Id IN :Trigger.old)]);
-        for(Opportunity opp : Trigger.old){
-            if(opp.StageName == 'Closed Won'){
-                if(accounts.get(opp.AccountId).Industry == 'Banking'){
-                    opp.addError('Cannot delete a closed won opportunity for a banking account');
-                }
-            }
-        }
+        OpportunityHandler.preventOppDeletionForBanking(Trigger.old);
     }
 
     /*
