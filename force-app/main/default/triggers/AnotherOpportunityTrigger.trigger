@@ -41,44 +41,6 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
         }
     }
 
-    /*
-    notifyOwnersOpportunityDeleted:
-    - Sends an email notification to the owner of the Opportunity when it gets deleted.
-    - Uses Salesforce's Messaging.SingleEmailMessage to send the email.
-    */
-    private static void notifyOwnersOpportunityDeleted(List<Opportunity> opps) {
-        List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
-        for (Opportunity opp : opps){
-            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-            String[] toAddresses = new String[] {[SELECT Id, Email FROM User WHERE Id = :opp.OwnerId].Email};
-            mail.setToAddresses(toAddresses);
-            mail.setSubject('Opportunity Deleted : ' + opp.Name);
-            mail.setPlainTextBody('Your Opportunity: ' + opp.Name +' has been deleted.');
-            mails.add(mail);
-        }        
-        
-        try {
-            Messaging.sendEmail(mails);
-        } catch (Exception e){
-            System.debug('Exception: ' + e.getMessage());
-        }
-    }
 
-    /*
-    assignPrimaryContact:
-    - Assigns a primary contact with the title of 'VP Sales' to undeleted Opportunities.
-    - Only updates the Opportunities that don't already have a primary contact.
-    */
-    private static void assignPrimaryContact(Map<Id,Opportunity> oppNewMap) {        
-        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>();
-        for (Opportunity opp : oppNewMap.values()){            
-            Contact primaryContact = [SELECT Id, AccountId FROM Contact WHERE Title = 'VP Sales' AND AccountId = :opp.AccountId LIMIT 1];
-            if (opp.Primary_Contact__c == null){
-                Opportunity oppToUpdate = new Opportunity(Id = opp.Id);
-                oppToUpdate.Primary_Contact__c = primaryContact.Id;
-                oppMap.put(opp.Id, oppToUpdate);
-            }
-        }
-        update oppMap.values();
-    }
-}
+
+
