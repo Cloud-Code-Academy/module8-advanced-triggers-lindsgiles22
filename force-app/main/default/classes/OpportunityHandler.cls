@@ -5,14 +5,11 @@ public with sharing class OpportunityHandler {
     * Trigger should only fire on update.
     */
     public static void validateOppAmount(List<Opportunity> newOpps){
-        List<Opportunity> oppsToUpdate = new List<Opportunity>();
         for(Opportunity opp : newOpps){
             if(opp.Amount < 5000){
                 opp.addError('Opportunity amount must be greater than 5000');
             }
-            oppsToUpdate.add(opp);
         }
-        update oppsToUpdate;
     }
 
     /*
@@ -37,12 +34,41 @@ public with sharing class OpportunityHandler {
             // Check conditions and throw error if necessary
             for (Opportunity opp : oldOpps) {
                 if (opp.StageName == 'Closed Won' && opp.AccountId != null) {
-                    Account relatedAccount = AccountMap.get(opp.AccountId);
+                    Account relatedAccount = accountMap.get(opp.AccountId);
                     if (related Account != null && relatedAccount.Industry == 'Banking') {
-                        opp.addError('Cannot delete closed opportunity for a banking account that is won';)
+                        opp.addError('Cannot delete closed opportunity for a banking account that is won');
                     }
                 }
             }
         }
     }
+    /*
+    * Opportunity Trigger
+    * When an opportunity is updated set the primary contact on the opportunity to the contact with the title of 'CEO'.
+    * Trigger should only fire on update.
+    */
+    public static void setPrimaryContactOnOpp(List<Opportunity> newOpps) {
+        //Get contacts related to the opportunity account
+        Set<Id> accountIds = new Set<Id>();
+        for(Opportunity opp : newOpps){
+            if (opp.AccountId != null) {
+            accountIds.add(opp.AccountId);
+        }
+    }
+        
+        Map<Id, Contact> accountIdToContact = new Map<Id, Contact>();
+
+        for (Contact cont : [SELECT Id, FirstName, AccountId FROM Contact WHERE AccountId IN :accountIds AND Title = 'CEO' ORDER BY FirstName ASC]) {
+            if (!accountIdToContact.containsKey(cont.AccountId)) {
+                accountIdToContact.put(cont.AccountId, cont);
+            }
+        }
+
+        for(Opportunity opp : newOpps){
+            if(opp.Primary_Contact__c == null){
+                if (accountIdToContact.containsKey(opp.AccountId)){
+                    opp.Primary_Contact__c = accountIdToContact.get(opp.AccountId).Id;
+                }
+            }
+        }
 }
