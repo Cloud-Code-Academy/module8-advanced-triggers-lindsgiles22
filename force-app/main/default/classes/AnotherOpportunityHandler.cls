@@ -10,8 +10,8 @@ public with sharing class AnotherOpportunityHandler {
     public static void preventOppDeletion(List<Opportunity> oldOpps) {
         // Prevent deletion of closed Opportunities
         for (Opportunity opp : oldOpps){
-            if (oldOpp.IsClosed){
-                oldOpp.addError('Cannot delete closed opportunity');
+            if (oldOpps.IsClosed){
+                oldOpps.addError('Cannot delete closed opportunity');
             }
         }
     }
@@ -27,7 +27,7 @@ public with sharing class AnotherOpportunityHandler {
             tsk.WhoId = opp.Primary_Contact__c;
             tsk.OwnerId = opp.OwnerId;
             tsk.ActivityDate = Date.today().addDays(3);
-            tasksToInsert.add(task);
+            tasksToInsert.add(tsk);
         }
     }
     
