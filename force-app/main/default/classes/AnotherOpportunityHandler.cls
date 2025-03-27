@@ -10,7 +10,7 @@ public with sharing class AnotherOpportunityHandler {
     public static void preventOppDeletion(List<Opportunity> oldOpps) {
         // Prevent deletion of closed Opportunities
         for (Opportunity opp : oldOpps){
-            if (opp.isClosed()) {
+            if (opp.StageName == 'Closed Won' || opp.StageName == 'Closed Lost') {
                 opp.addError('Cannot delete closed opportunity');
             }
         }
