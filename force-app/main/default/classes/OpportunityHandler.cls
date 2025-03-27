@@ -34,7 +34,7 @@ public with sharing class OpportunityHandler {
             for (Opportunity opp : oldOpps) {
                 if (opp.StageName == 'Closed Won' && opp.AccountId != null) {
                     Account relatedAccount = accountMap.get(opp.AccountId);
-                    if (related Account != null && relatedAccount.Industry == 'Banking') {
+                    if (relatedAccount != null && relatedAccount.Industry == 'Banking') {
                         opp.addError('Cannot delete closed opportunity for a banking account that is won');
                     }
                 }
