@@ -60,15 +60,29 @@ public with sharing class AnotherOpportunityHandler {
     - Uses Salesforce's Messaging.SingleEmailMessage to send the email.
     */
     public static void notifyOwnersOpportunityDeleted(List<Opportunity> opps) {
+        // Create a list to hold the user ids (owners) for the opportunities
+        Set<Id> ownerIds = new Set<Id>();
+        for(Opportunity opp : opps) {
+            ownerIds.add(opp.OwnerId);
+        }
+        // Query the users associated with the opps
+        Map<Id, String> ownerEmails = new Map<Id, String>();
+        for (User u : [SELECT Id, Email FROM User WHERE Id IN :ownerIds]) {
+            ownerEmails.put(u.Id, u.Email);
+        }
+
+        // Create email messages and add them to the list
         List<Messaging.SingleEmailMessage> mails = new List<Messaging.SingleEmailMessage>();
         for (Opportunity opp : opps){
+            if (ownerEmails.containsKey(opp.OwnerId)) {
             Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-            String[] toAddresses = new String[] {[SELECT Id, Email FROM User WHERE Id = :opp.OwnerId].Email};
+            String[] toAddresses = new String[] {ownerEmails.get(opp.OwnerId)};
             mail.setToAddresses(toAddresses);
             mail.setSubject('Opportunity Deleted : ' + opp.Name);
             mail.setPlainTextBody('Your Opportunity: ' + opp.Name +' has been deleted.');
             mails.add(mail);
-        }        
+        }     
+    }   
         
         try {
             Messaging.sendEmail(mails);
