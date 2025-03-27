@@ -27,7 +27,7 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
 
     if (Trigger.isBefore){
         if (Trigger.isInsert){
-          AnotherOpportunityHandler.setOppType(Trigger.new);  
+          AnotherOpportunityHandler.setOppType(Trigger.new);
         } else if (Trigger.isDelete){
             AnotherOpportunityHandler.preventOppDeletion(Trigger.old);
         }
