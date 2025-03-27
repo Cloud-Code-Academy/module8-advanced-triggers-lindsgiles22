@@ -111,7 +111,7 @@ public with sharing class AnotherOpportunityHandler {
         List<Opportunity> oppToUpdateList = new List<Opportunity>();
         for (Opportunity opp : oppNewMap.values()){            
             Contact primaryContact = accountToContactMap.get(opp.AccountId);
-            if (opp.Primary_Contact__c != null && opp.Primary_Contact__c == null) {
+            if (opp.Primary_Contact__c != null) {
                 opp.Primary_Contact__c = primaryContact.Id;
                 oppToUpdateList.add(opp);
             }
