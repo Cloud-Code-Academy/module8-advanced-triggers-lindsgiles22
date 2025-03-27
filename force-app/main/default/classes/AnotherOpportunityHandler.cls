@@ -37,11 +37,17 @@ public with sharing class AnotherOpportunityHandler {
 }
     public static void appendStageChangesToOppDescrip (List<Opportunity> newOpps) {
     List<Opportunity> oppsToUpdate = new List<Opportunity>(); 
-    // Append Stage changes in Opportunity Description
+    // Loop through each Opportunity in the newOpps list
      for (Opportunity opp : newOpps){
         if (opp.StageName != null){
-            opp.Description += '\n Stage Change:' + opp.StageName + ':' + DateTime.now().format();
-            oppsToUpdate.add(opp);
+            // Create a new opportunity instance with the Id of the original record
+            Opportunity updatedOpp = new Opportunity(Id = opp.Id);
+
+            // Append the Stage change information to the Description
+            updatedOpp.Description = opp.Description + '\n Stage Change:' + opp.StageName + ':' + DateTime.now().format();
+
+            // Add the updated Opportunity to the list for updating
+            oppsToUpdate.add(updatedOpp);
         }
     }
     if (!oppsToUpdate.isEmpty()) {
