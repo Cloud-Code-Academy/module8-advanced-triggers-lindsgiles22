@@ -96,15 +96,28 @@ public with sharing class AnotherOpportunityHandler {
     - Only updates the Opportunities that don't already have a primary contact.
     */
     public static void assignPrimaryContact(Map<Id,Opportunity> oppNewMap) {        
-        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>();
+        Set<Id> accountIds = new Set<Id>();
+        for (Opportunity opp : oppNewMap.values()) {
+            accountIds.add(opp.AccountId);
+        }
+
+        // Query for Contacts with Title 'VP Sales' for the relevant accounts
+        Map<Id, Contact> accountToContactMap = new Map<Id, Contact>();
+        for (Contact c : [SELECT Id, AccountId FROM Contact WHERE Title = 'VP Sales' AND AccountId IN :accountIds]) {
+            accountToContactMap.put(c.AccountId, c);
+        }
+
+        // Prepare opps to update
+        List<Opportunity> oppToUpdateList = new List<Opportunity>();
         for (Opportunity opp : oppNewMap.values()){            
-            Contact primaryContact = [SELECT Id, AccountId FROM Contact WHERE Title = 'VP Sales' AND AccountId = :opp.AccountId LIMIT 1];
-            if (opp.Primary_Contact__c == null){
-                Opportunity oppToUpdate = new Opportunity(Id = opp.Id);
-                oppToUpdate.Primary_Contact__c = primaryContact.Id;
-                oppMap.put(opp.Id, oppToUpdate);
+            Contact primaryContact = accountToContactMap.get(opp.AccountId);
+            if (opp.Primary_Contact__c != null && opp.Primary_Contact__c == null) {
+                opp.Primary_Contact__c = primaryContact.Id;
+                oppToUpdateList.add(opp);
             }
         }
-        update oppMap.values();
+        if (!oppToUpdateList.isEmpty()) {
+        update oppToUpdateList;
+        }
     } 
 }
