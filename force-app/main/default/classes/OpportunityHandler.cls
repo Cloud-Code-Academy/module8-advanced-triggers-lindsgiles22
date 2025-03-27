@@ -40,7 +40,7 @@ public with sharing class OpportunityHandler {
                 }
             }
         }
-    }
+    
     /*
     * Opportunity Trigger
     * When an opportunity is updated set the primary contact on the opportunity to the contact with the title of 'CEO'.
@@ -70,4 +70,5 @@ public with sharing class OpportunityHandler {
                 }
             }
         }
+    }
 }

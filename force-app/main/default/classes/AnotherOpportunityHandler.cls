@@ -2,7 +2,7 @@ public with sharing class AnotherOpportunityHandler {
     public static void setOppType(List<Opportunity> newOpps) {
         // Set default Type for new Opportunities
         for (Opportunity opp : newOpps) {
-            if (opp.Type == null){
+            if (opp.Type == null) {
                 opp.Type = 'New Customer';
         }
     }
@@ -10,8 +10,8 @@ public with sharing class AnotherOpportunityHandler {
     public static void preventOppDeletion(List<Opportunity> oldOpps) {
         // Prevent deletion of closed Opportunities
         for (Opportunity opp : oldOpps){
-            if (oldOpps.IsClosed){
-                oldOpps.addError('Cannot delete closed opportunity');
+            if (opp.isClosed()) {
+                opp.addError('Cannot delete closed opportunity');
             }
         }
     }
@@ -32,7 +32,7 @@ public with sharing class AnotherOpportunityHandler {
     }
     
     if (!tasksToInsert.isEmpty()) {
-    insert tsk;
+    insert tasksToInsert;
     }
 }
     public static void appendStageChangesToOppDescrip (List<Opportunity> newOpps) {
