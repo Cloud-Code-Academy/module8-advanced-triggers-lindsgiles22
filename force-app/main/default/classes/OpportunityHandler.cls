@@ -22,10 +22,9 @@ public with sharing class OpportunityHandler {
         Set<Id> accountIds = new Set<Id>();
         for (Opportunity opp : oldOpps) {
             if(opp.StageName == 'Closed Won' && opp.AccountId != null) {
-                if(accounts.get(opp.AccountId).Industry == 'Banking'){
                     accountIds.add(opp.AccountId);
-                }
             }
+        }
             // Query all relevant Accounts at once
             Map<Id, Account> accountMap = new Map<Id, Account>(
                 [SELECT Id, Industry FROM Account WHERE ID in :accountIds]
@@ -50,7 +49,7 @@ public with sharing class OpportunityHandler {
     public static void setPrimaryContactOnOpp(List<Opportunity> newOpps) {
         //Get contacts related to the opportunity account
         Set<Id> accountIds = new Set<Id>();
-        for(Opportunity opp : newOpps){
+        for(Opportunity opp : newOpps) {
             if (opp.AccountId != null) {
             accountIds.add(opp.AccountId);
         }
