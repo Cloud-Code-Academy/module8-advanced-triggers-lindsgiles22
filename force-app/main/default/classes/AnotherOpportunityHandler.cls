@@ -112,8 +112,8 @@ public with sharing class AnotherOpportunityHandler {
         for (Opportunity opp : oppNewMap.values()){            
             Contact primaryContact = accountToContactMap.get(opp.AccountId);
             if (opp.Primary_Contact__c == null) {
-                opp.Primary_Contact__c = primaryContact.Id;
-                oppToUpdateList.add(opp);
+                // Store opportunity for later update 
+                oppToUpdateList.add(new Opportunity(Id = opp.Id, Primary_Contact__c = primaryContact.Id));
             }
         }
         if (!oppToUpdateList.isEmpty()) {
