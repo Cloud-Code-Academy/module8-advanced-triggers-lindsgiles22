@@ -95,7 +95,7 @@ public with sharing class AnotherOpportunityHandler {
     - Assigns a primary contact with the title of 'VP Sales' to undeleted Opportunities.
     - Only updates the Opportunities that don't already have a primary contact.
     */
-    public static void assignPrimaryContact(Map<Id,Opportunity> oppNewMap) {        
+    public static void assignPrimaryContact(Map<Id, Opportunity> oppNewMap) {        
         Set<Id> accountIds = new Set<Id>();
         for (Opportunity opp : oppNewMap.values()) {
             accountIds.add(opp.AccountId);
