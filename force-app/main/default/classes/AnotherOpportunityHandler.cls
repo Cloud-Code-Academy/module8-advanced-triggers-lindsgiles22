@@ -109,7 +109,7 @@ public with sharing class AnotherOpportunityHandler {
 
         // Prepare opps to update
         List<Opportunity> oppToUpdateList = new List<Opportunity>();
-        for (Opportunity opp : oppNewMap.values()){            
+        for (Opportunity opp : [SELECT Id, Primary_Contact__c, AccountId FROM Opportunity WHERE Id IN :oppNewMap.keySet()]){         
             Contact primaryContact = accountToContactMap.get(opp.AccountId);
             if (opp.Primary_Contact__c == null) {
                 // Store opportunity for later update 
