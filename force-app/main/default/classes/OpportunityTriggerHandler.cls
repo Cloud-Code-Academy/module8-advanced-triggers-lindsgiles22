@@ -38,8 +38,12 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 
     // Override the after undelete method to handle logic after undeleting Opportunities
     protected override void afterUndelete() {
-        // Convert the List<Opportunity> to a Map<Id, Opportunity>
-        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>(Trigger.new);
+        // Manually map the Trigger.new list into a Map<Id, Opportunity>
+        Map<Id, Opportunity> oppMap = new Map<Id, Opportunity>();
+        for (Opportunity opp : [SELECT Id, AccountId FROM Opportunity WHERE Id IN :Trigger.new]) {
+            oppMap.put(opp.Id, opp);
+        }
+        
         // Logic from AnotherOpportunityTrigger: Assign Primary Contact to undeleted Opportunities
         AnotherOpportunityHandler.assignPrimaryContact(oppMap);
     }
