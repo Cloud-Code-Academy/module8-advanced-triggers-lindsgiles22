@@ -1,4 +1,4 @@
-public class OpportunityTriggerHandler extends TriggerHandler {
+public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 
     // Override the before insert method to handle logic before new Opportunities are inserted
     protected override void beforeInsert() {
@@ -38,6 +38,8 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
     // Override the after undelete method to handle logic after undeleting Opportunities
     protected override void afterUndelete() {
+        // Convert the List<Opportunity> to a Map<Id, Opportunity>
+        Map<Id, Opportunity> oppMap = new Map<Id,Opportunity>([SELECT Id, AccountId FROM Opportunity WHERE Id IN :Trigger.new]);
         // Logic from AnotherOpportunityTrigger: Assign Primary Contact to undeleted Opportunities
         AnotherOpportunityHandler.assignPrimaryContact(Trigger.new);
     }
