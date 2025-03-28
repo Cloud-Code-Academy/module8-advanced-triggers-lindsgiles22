@@ -15,32 +15,53 @@ For this lesson, students have two options:
 
 Remember, whichever option you choose, ensure that the trigger is activated and tested to validate its functionality.
 */
-trigger OpportunityTrigger on Opportunity (before update, after update, before delete) {
+// trigger OpportunityTrigger on Opportunity (before update, after update, before delete) {
 
     /*
     * Opportunity Trigger
     * When an opportunity is updated validate that the amount is greater than 5000.
     * Trigger should only fire on update.
     */
-    if (Trigger.isUpdate && Trigger.isBefore){
-        OpportunityHandler.validateOppAmount(Trigger.new);
-    }
+    // if (Trigger.isUpdate && Trigger.isBefore){
+    //    OpportunityHandler.validateOppAmount(Trigger.new);
+    // }
 
     /*
     * Opportunity Trigger
     * When an opportunity is deleted prevent the deletion of a closed won opportunity if the account industry is 'Banking'.
     * Trigger should only fire on delete.
     */
-    if (Trigger.isDelete){
-        OpportunityHandler.preventOppDeletionForBanking(Trigger.old);
-    }
+    //if (Trigger.isDelete){
+     //   OpportunityHandler.preventOppDeletionForBanking(Trigger.old);
+   // }
 
     /*
     * Opportunity Trigger
     * When an opportunity is updated set the primary contact on the opportunity to the contact with the title of 'CEO'.
     * Trigger should only fire on update.
     */
-    if (Trigger.isUpdate && Trigger.isBefore){
-        OpportunityHandler.setPrimaryContactOnOpp(Trigger.new);
-    }    
+    //if (Trigger.isUpdate && Trigger.isBefore){
+      //  OpportunityHandler.setPrimaryContactOnOpp(Trigger.new);
+   // }    
+//}
+
+trigger OpportunityTrigger on Opportunity (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
+
+    // Prevent recursion using a static variable
+    if (TriggerHelper.isTriggerRunning) {
+        return;
+    }
+    TriggerHelper.isTriggerRunning = true;
+
+    // Create an instance of OpportunityTriggerHandler
+    OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
+
+    // Set the maximum loop count if needed (optional)
+    handler.setMaxLoopCount(5);
+
+    // Run the appropriate methods based on the trigger context
+    handler.run();
+
+    // Reset recursion control after execution
+    TriggerHelper.isTriggerRunning = false;
 }

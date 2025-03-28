@@ -20,6 +20,7 @@ https://developer.salesforce.com/blogs/developer-relations/2015/01/apex-best-pra
 */
 trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
     // Prevent recursion using a static variable
+    /*
     if (TriggerHelper.isTriggerRunning) {
         return;
     }
@@ -48,7 +49,6 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
     }
     // Reset recursion control after execution
     TriggerHelper.isTriggerRunning = false;
+    */
 }
-
-
 
