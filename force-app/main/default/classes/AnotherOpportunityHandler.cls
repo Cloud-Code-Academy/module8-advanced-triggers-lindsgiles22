@@ -20,18 +20,21 @@ public with sharing class AnotherOpportunityHandler {
         List<Task> tasksToInsert = new List<Task>();
 
         for (Opportunity opp : insertedOpps) {
-            System.debug('Primary Contact: ' + opp.Primary_Contact__c);
-
-            if (opp.Primary_Contact__c != null) {
+            
             Task tsk = new Task();
             tsk.Subject = 'Call Primary Contact';
             tsk.WhatId = opp.Id;
-            tsk.WhoId = opp.Primary_Contact__c;
+            
             tsk.OwnerId = opp.OwnerId;
             tsk.ActivityDate = Date.today().addDays(3);
+
+            // Only set WhoId if Primary contact is not null
+            if (opp.Primary_Contact__c != null) {
+                tsk.WhoId = opp.Primary_Contact__c;
+            }
+
             tasksToInsert.add(tsk);
         }
-    }
     
     if (!tasksToInsert.isEmpty()) {
     insert tasksToInsert;
