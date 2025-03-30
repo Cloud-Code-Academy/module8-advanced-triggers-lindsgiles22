@@ -13,11 +13,14 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 
         // Logic from OpportunityTrigger: Set Primary Contact for Opportunities
         OpportunityHandler.setPrimaryContactOnOpp(Trigger.new);
-        
-        // Logic from AnotherOpportunityTrigger: Prevent deletion of certain Opportunities
-        AnotherOpportunityHandler.preventOppDeletion(Trigger.old);
     }
 
+    // Override the before delete method to handle logic before deleting Opportunities
+    protected override void beforeDelete() {
+        // Prevent deletion of closed Opportunities
+        AnotherOpportunityHandler.preventOppDeletion(Trigger.old);
+}
+   
     // Override the after insert method to handle logic after new Opportunities are inserted
     protected override void afterInsert() {
         // Logic from AnotherOpportunityTrigger: Create task for new Opportunities
