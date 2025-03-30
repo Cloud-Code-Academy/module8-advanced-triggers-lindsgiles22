@@ -9,8 +9,12 @@ public with sharing class AnotherOpportunityHandler {
 }
     public static void preventOppDeletion(List<Opportunity> oldOpps) {
         // Prevent deletion of closed Opportunities
+
         for (Opportunity opp : oldOpps){
+            // Debugging StageName and Opportunity details
+            System.debug('Checking Opportunity for deletion: ' + opp.Name + ' | Stage: ' + opp.StageName);
             if (opp.StageName == 'Closed Won' || opp.StageName == 'Closed Lost') {
+                System.debug('Attempting to delete Closed Opportunity: ' + opp.Name);
                 // Throw an exception to prevent deletion
                 throw new DmlException('Cannot delete closed opportunity');
             }
