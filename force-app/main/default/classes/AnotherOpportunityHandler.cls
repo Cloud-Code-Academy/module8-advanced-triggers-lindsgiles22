@@ -12,9 +12,9 @@ public with sharing class AnotherOpportunityHandler {
 
         for (Opportunity opp : oldOpps){
             // Debugging StageName and Opportunity details
-            System.debug('Checking Opportunity for deletion: ' + opp.Name + ' | Stage: ' + opp.StageName);
+            System.debug('$$$Checking Opportunity for deletion: ' + opp.Name + ' | Stage: ' + opp.StageName);
             if (opp.StageName == 'Closed Won' || opp.StageName == 'Closed Lost') {
-                System.debug('Attempting to delete Closed Opportunity: ' + opp.Name);
+                System.debug('$$$Attempting to delete Closed Opportunity: ' + opp.Name);
                 // Throw an exception to prevent deletion
                 throw new DmlException('Cannot delete closed opportunity');
             }
