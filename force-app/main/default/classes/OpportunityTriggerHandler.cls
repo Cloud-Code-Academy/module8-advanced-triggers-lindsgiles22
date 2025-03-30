@@ -1,5 +1,8 @@
 public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 
+    // Static variable to prevent recursion
+    private static Boolean isUpdating = false;
+
     // Override the before insert method to handle logic before new Opportunities are inserted
     protected override void beforeInsert() {
         // Logic from AnotherOpportunityTrigger: Set default Opportunity Type for new Opportunities
