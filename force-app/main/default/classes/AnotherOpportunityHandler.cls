@@ -11,7 +11,8 @@ public with sharing class AnotherOpportunityHandler {
         // Prevent deletion of closed Opportunities
         for (Opportunity opp : oldOpps){
             if (opp.StageName == 'Closed Won' || opp.StageName == 'Closed Lost') {
-                opp.addError('Cannot delete closed opportunity');
+                // Throw an exception to prevent deletion
+                throw new Exception('Cannot delete closed opportunity');
             }
         }
     }
