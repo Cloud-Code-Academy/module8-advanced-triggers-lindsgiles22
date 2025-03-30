@@ -47,17 +47,10 @@ Remember, whichever option you choose, ensure that the trigger is activated and 
 
 trigger OpportunityTrigger on Opportunity (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
 
-    // Prevent recursion using a static variable
-    if (OpportunityTriggerHandler.isRecursiveCall) {
-        return;
-    }
-
     // Create an instance of OpportunityTriggerHandler
     OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
-
-    // Set the maximum loop count if needed (optional)
-    // handler.setMaxLoopCount(5);
 
     // Run the appropriate methods based on the trigger context
     handler.run();
 }
+
