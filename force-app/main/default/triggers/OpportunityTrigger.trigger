@@ -56,7 +56,7 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
     OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
 
     // Set the maximum loop count if needed (optional)
-    handler.setMaxLoopCount(5);
+    // handler.setMaxLoopCount(5);
 
     // Run the appropriate methods based on the trigger context
     handler.run();
