@@ -12,7 +12,7 @@ public with sharing class AnotherOpportunityHandler {
         for (Opportunity opp : oldOpps){
             if (opp.StageName == 'Closed Won' || opp.StageName == 'Closed Lost') {
                 // Throw an exception to prevent deletion
-                throw new Exception('Cannot delete closed opportunity');
+                throw new DmlException('Cannot delete closed opportunity');
             }
         }
     }
