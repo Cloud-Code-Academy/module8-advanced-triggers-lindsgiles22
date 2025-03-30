@@ -29,8 +29,17 @@ public with sharing class OpportunityTriggerHandler extends TriggerHandler {
 
     // Override the after update method to handle logic after updating Opportunities
     protected override void afterUpdate() {
+        // Prevent recursion by checking the static variable
+        if (isUpdating) {
+            return;
+        }
+
+        isUpdating = true; // Set flag to true to prevent further updates
+
         // Logic from AnotherOpportunityTrigger: Append stage changes to Opportunity descriptions
         AnotherOpportunityHandler.appendStageChangesToOppDescrip(Trigger.new);
+
+        isUpdating = false; // Reset the flag after execution
     }
 
     // Override the after delete method to handle logic after deleting Opportunities
