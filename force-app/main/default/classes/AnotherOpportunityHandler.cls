@@ -20,6 +20,8 @@ public with sharing class AnotherOpportunityHandler {
         List<Task> tasksToInsert = new List<Task>();
 
         for (Opportunity opp : insertedOpps) {
+            System.debug('Primary Contact: ' + opp.Primary_Contact__c);
+
             if (opp.Primary_Contact__c != null) {
             Task tsk = new Task();
             tsk.Subject = 'Call Primary Contact';
