@@ -50,5 +50,3 @@ https://developer.salesforce.com/blogs/developer-relations/2015/01/apex-best-pra
     // Reset recursion control after execution
     TriggerHelper.isTriggerRunning = false;
     */
-//}
-
