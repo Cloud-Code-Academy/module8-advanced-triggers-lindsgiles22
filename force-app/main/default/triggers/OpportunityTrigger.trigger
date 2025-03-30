@@ -48,10 +48,9 @@ Remember, whichever option you choose, ensure that the trigger is activated and 
 trigger OpportunityTrigger on Opportunity (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
 
     // Prevent recursion using a static variable
-    if (TriggerHelper.isTriggerRunning) {
+    if (OpportunityTriggerHandler.isRecursiveCall) {
         return;
     }
-    TriggerHelper.isTriggerRunning = true;
 
     // Create an instance of OpportunityTriggerHandler
     OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
@@ -61,7 +60,4 @@ trigger OpportunityTrigger on Opportunity (before insert, after insert, before u
 
     // Run the appropriate methods based on the trigger context
     handler.run();
-
-    // Reset recursion control after execution
-    TriggerHelper.isTriggerRunning = false;
 }
